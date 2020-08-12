@@ -46,14 +46,8 @@ class Bond:
         self.full_price = round((self.price / 100 * 1000 * self.amount), 1)
         self.full_income = (self.income() + self.profitability(amount_days)) * amount
 
-
-traider = Traider(2, 2, 8000)
-bonds = []
-bonds.append(Bond(1, 'alfa-05', 100.2, 2, traider.amount_days))
-bonds.append(Bond(2, 'alfa-05', 101.5, 5, traider.amount_days))
-bonds.append(Bond(2, 'gazprom-17', 100.0, 2, traider.amount_days))
-bonds.append(Bond(2, 'my', 98.0, 2, traider.amount_days))
-
+    def __str__(self):
+        return f"Bond: {self.day} {self.name} {self.price} {self.amount}"
 
 
 @lru_cache(maxsize=None)  # cache all calls
@@ -80,9 +74,17 @@ def choose_bonds_to_buy(traider, bonds):
     traider.income = sum([ x.full_income for x in traider.bonds])
 
 
+
+traider = Traider(2, 2, 8000)
+bonds = []
+bonds.append(Bond(1, 'alfa-05', 100.2, 2, traider.amount_days))
+bonds.append(Bond(2, 'alfa-05', 101.5, 5, traider.amount_days))
+bonds.append(Bond(2, 'gazprom-17', 100.0, 2, traider.amount_days))
+# bonds.append(Bond(2, 'my', 98.0, 2, traider.amount_days))
+
 choose_bonds_to_buy(traider, bonds)
 
-print("choosed bonds ")
-print([ (x.name, x.price, x.amount) for x in traider.bonds])
-print("income: ", traider.income)
+print("Choosed bonds: ")
+print([ str(x) for x in traider.bonds])
+print("Income: ", traider.income)
 print(best_value.cache_info())
